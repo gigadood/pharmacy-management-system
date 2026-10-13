@@ -1,0 +1,22 @@
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+web/.env
+
+# Python environments and generated files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.log
+
+# Private exports; the synthetic demo dataset is committed separately
+*-backup.sql
+*.dump
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+.vscode/*.log

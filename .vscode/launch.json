@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [{
+    "name": "Run Pharmacy (Flask + MySQL)",
+    "type": "debugpy",
+    "request": "launch",
+    "program": "${workspaceFolder}/web/app.py",
+    "cwd": "${workspaceFolder}/web",
+    "envFile": "${workspaceFolder}/web/.env",
+    "console": "integratedTerminal",
+    "justMyCode": true
+  }]
+}
