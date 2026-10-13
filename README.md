@@ -4,14 +4,15 @@ A local pharmacy workspace with a browser frontend, a Flask backend, and a MySQL
 
 ## Features
 
-- Dashboard with inventory counts, stock value, daily sales and expiry alerts.
-- Medicine search, stock-status filters, and administrator forms to add or edit medicines.
-- Supplier/company directory and creation.
-- Stock receipt with purchase totals and inventory updates in one transaction.
-- Sales entry with calculated prices, quantity validation and expired-stock rejection.
-- Printable transaction receipts and sales history.
-- Staff directory with administrator access; session-based login and logout.
-- Parameterized SQL, CSRF protection, and backend input validation.
+- **Today** page that sums up the day in a sentence (takings, expired, low and soon-to-expire stock, each linking to a filtered list), a 14-day sales chart, a "needs attention" list and the latest sales.
+- **Shelf wall**: every drawer (A-01, B-04, …) drawn as a cabinet, filled by how much stock is left and marked by status. Select a drawer to open the product.
+- **Counter** with a bill: scan or type a barcode and press Enter, or search and pick with the arrow keys; adjust quantities; dispense the whole bill and get a printable receipt.
+- Product panel with stock level, margin, units sold in the last 30 days and a scannable Code 39 barcode.
+- Inventory search with status filters (in stock, low or out, expiring within 30 days, expired), sortable columns and a shelves view.
+- Administrator forms to add or edit products, receive stock (with a live "new stock level" preview) and add suppliers.
+- Sales history grouped by day, supplier directory with each supplier's products, and a staff directory with 30-day sales.
+- Command palette (Ctrl K / ⌘K) to jump to any product, page or action; light and dark themes; works on phones.
+- Session-based login and logout, parameterized SQL, CSRF protection, and backend input validation.
 
 ## Stack
 
@@ -33,7 +34,7 @@ Install Python 3.11 or later and MySQL Server. MySQL Workbench and VS Code are o
 
 In MySQL Workbench, open `database/Pharmacy-Demo-Data.sql` and execute the script once. It creates a new schema named `pharmacy_demo`. If that schema already exists, stop instead of running the script again. No existing databases are dropped.
 
-The synthetic dataset contains 40 medicines, 8 suppliers, 5 staff accounts, 40 accumulated purchase records, and 183 historical sales across 30 days. It includes low stock, zero stock, expired medicines and near-expiry stock. Dates are calculated relative to the import day, and stock quantities reconcile with purchase and sales records. Prices, identities and transactions are demo examples, not real business data.
+The synthetic dataset contains 70 products on seven shelves, 8 suppliers, 5 staff accounts, 70 accumulated purchase records, and 183 historical sales across 30 days. Shelves A to D hold 40 medicines; shelves E to G hold 30 everyday pharmacy items (emergency contraceptive pills, condoms, lubricants, pregnancy tests, sanitary pads, antiseptics, soap, sanitiser, deodorants, toothpaste, wipes and first-aid supplies), which have stock but no sales history yet. It includes low stock, zero stock, expired medicines and near-expiry stock. Dates are calculated relative to the import day, and stock quantities reconcile with purchase and sales records. Prices, identities and transactions are demo examples, not real business data. The everyday items use common retail brand names with approximate prices, not live MRPs.
 
 ### 2. Configure the connection
 
@@ -88,11 +89,11 @@ For Linux/macOS, create and activate a Python virtual environment, install `web/
 
 The app preserves the original ten-table schema. A barcode identifies one medicine record and one expiry date; there is no separate batch model. Purchases accumulate per barcode because `purchase.BARCODE` is a primary key. Sales save into `sales` and `history_sales`, reducing inventory in the same transaction.
 
-This is a local student application. The original plaintext-password format is retained for schema compatibility. Flask runs on loopback using its development server. Public deployment would require password hashing, a production server and further security work. Multi-item tax invoices, staff editing, password changes, messaging, and batch tracking are not implemented. Receipts are transaction receipts, not GST tax invoices. Amounts are displayed in INR.
+This is a local student application. The original plaintext-password format is retained for schema compatibility. Flask runs on loopback using its development server. Public deployment would require password hashing, a production server and further security work. The counter's bill saves each product as its own sale, because the sales API accepts one barcode per request; if one line fails, the others are still recorded and the failed line stays on the bill with the reason. Tax invoices, staff editing, password changes, messaging, and batch tracking are not implemented. Receipts are transaction receipts, not GST tax invoices. Amounts are displayed in INR.
 
 ## Verification
 
-The backend and demo SQL were tested against a disposable MariaDB instance: login, CSRF, permissions, read APIs, medicine editing, duplicate handling, sale amounts, quantity checks, expired-stock rejection and transactional restocking. Demo data was checked for table counts and stock reconciliation. The project has also connected to standalone MySQL 8.0.46 on the developer's Windows machine. Browser workflows have not been exhaustively tested.
+The backend and demo SQL were tested against a disposable MariaDB instance: login, CSRF, permissions, read APIs, medicine editing, duplicate handling, sale amounts, quantity checks, expired-stock rejection and transactional restocking. Demo data was checked for table counts and stock reconciliation. The project has also connected to standalone MySQL 8.0.46 on the developer's Windows machine. The browser interface was walked through in headless Chrome at desktop and phone widths, in light and dark themes, as both the administrator and a regular staff member: sign-in, every page, the shelf wall, product panel, command palette, forms, the bill and receipt (with sale responses simulated so the database was not changed). It has not been exhaustively tested across browsers.
 
 ## Acknowledgment
 

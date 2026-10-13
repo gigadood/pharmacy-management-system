@@ -1,5 +1,6 @@
 -- Pharmacy demo dataset for the existing 10-table application schema.
 -- SYNTHETIC: medicine prices, people, addresses, phones, and all transactions are demo data.
+-- Products DEMO000041-DEMO000070 use common retail brand names; their prices are approximate demo values, not live MRPs.
 -- Stock unit = one listed item/unit. Dose stores strength, not administration instructions.
 -- Creates a NEW schema. Does not drop, truncate, or update an existing database.
 -- Run ONCE. If pharmacy_demo already exists, STOP; do not continue into that schema.
@@ -171,7 +172,38 @@ INSERT INTO `drugs` (`NAME`,`TYPE`,`BARCODE`,`DOSE`,`CODE`,`COST_PRICE`,`SELLING
 ('Chlorhexidine rinse','Solution','DEMO000037','0.2%','M037',72,105,'Available for use','GreenLeaf Pharma',DATE_SUB(@seed_today,INTERVAL 180 DAY),DATE_ADD(@seed_today,INTERVAL 366 DAY),'D-07',120),
 ('Dextrose injection','Injection','DEMO000038','25%','M038',28,45,'Available for use','Metro MedSupply',DATE_SUB(@seed_today,INTERVAL 180 DAY),DATE_ADD(@seed_today,INTERVAL 339 DAY),'D-08',149),
 ('Saline infusion','Injection','DEMO000039','500ml','M039',32,50,'Available for use','Prism Healthcare',DATE_SUB(@seed_today,INTERVAL 180 DAY),DATE_ADD(@seed_today,INTERVAL 372 DAY),'D-09',88),
-('Hydrocortisone cream','Cream','DEMO000040','1%','M040',42,65,'Available for use','RiverSide Pharma',DATE_SUB(@seed_today,INTERVAL 180 DAY),DATE_ADD(@seed_today,INTERVAL 537 DAY),'D-10',114);
+('Hydrocortisone cream','Cream','DEMO000040','1%','M040',42,65,'Available for use','RiverSide Pharma',DATE_SUB(@seed_today,INTERVAL 180 DAY),DATE_ADD(@seed_today,INTERVAL 537 DAY),'D-10',114),
+-- Everyday pharmacy products: sexual and reproductive health (E), personal care and hygiene (F), first aid (G).
+('i-pill emergency contraceptive','Tablet','DEMO000041','1.5mg','M041',85,110,'Available for use','GreenLeaf Pharma',DATE_SUB(@seed_today,INTERVAL 90 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 90 DAY),INTERVAL 36 MONTH),'E-01',30),
+('Unwanted 72 emergency pill','Tablet','DEMO000042','1.5mg','M042',70,90,'Available for use','Deccan MedSupply',DATE_SUB(@seed_today,INTERVAL 120 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 120 DAY),INTERVAL 36 MONTH),'E-02',20),
+('Durex Extra Thin condoms','Condom','DEMO000043','10 pcs','M043',260,340,'Available for use','Metro MedSupply',DATE_SUB(@seed_today,INTERVAL 150 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 150 DAY),INTERVAL 60 MONTH),'E-03',40),
+('Manforce condoms','Condom','DEMO000044','10 pcs','M044',140,180,'Available for use','Prism Healthcare',DATE_SUB(@seed_today,INTERVAL 100 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 100 DAY),INTERVAL 60 MONTH),'E-04',50),
+('Moods condoms','Condom','DEMO000045','3 pcs','M045',38,50,'Available for use','Western Care',DATE_SUB(@seed_today,INTERVAL 80 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 80 DAY),INTERVAL 60 MONTH),'E-05',60),
+('Durex Play lubricant gel','Gel','DEMO000046','50ml','M046',200,260,'Available for use','Metro MedSupply',DATE_SUB(@seed_today,INTERVAL 140 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 140 DAY),INTERVAL 36 MONTH),'E-06',18),
+('K-Y Jelly lubricant','Gel','DEMO000047','50g','M047',230,299,'Available for use','RiverSide Pharma',DATE_SUB(@seed_today,INTERVAL 200 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 200 DAY),INTERVAL 36 MONTH),'E-07',9),
+('Prega News pregnancy test','Kit','DEMO000048','1 kit','M048',42,60,'Available for use','Sahyadri Pharma',DATE_SUB(@seed_today,INTERVAL 60 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 60 DAY),INTERVAL 24 MONTH),'E-08',35),
+('Whisper Ultra sanitary pads','Pad','DEMO000049','XL 8 pads','M049',75,99,'Available for use','Pune HealthSupply',DATE_SUB(@seed_today,INTERVAL 45 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 45 DAY),INTERVAL 36 MONTH),'E-09',40),
+('V Wash intimate hygiene wash','Solution','DEMO000050','100ml','M050',165,215,'Available for use','GreenLeaf Pharma',DATE_SUB(@seed_today,INTERVAL 110 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 110 DAY),INTERVAL 24 MONTH),'E-10',15),
+('Dettol antiseptic liquid','Solution','DEMO000051','250ml','M051',110,142,'Available for use','Deccan MedSupply',DATE_SUB(@seed_today,INTERVAL 75 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 75 DAY),INTERVAL 60 MONTH),'F-01',30),
+('Savlon antiseptic liquid','Solution','DEMO000052','200ml','M052',90,118,'Available for use','Western Care',DATE_SUB(@seed_today,INTERVAL 130 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 130 DAY),INTERVAL 60 MONTH),'F-02',20),
+('Dettol original soap','Soap','DEMO000053','125g','M053',38,50,'Available for use','Deccan MedSupply',DATE_SUB(@seed_today,INTERVAL 40 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 40 DAY),INTERVAL 36 MONTH),'F-03',48),
+('Dettol hand sanitizer','Sanitizer','DEMO000054','200ml','M054',75,100,'Available for use','Sahyadri Pharma',DATE_SUB(@seed_today,INTERVAL 95 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 95 DAY),INTERVAL 36 MONTH),'F-04',36),
+('Nivea Men deodorant','Spray','DEMO000055','150ml','M055',190,249,'Available for use','Metro MedSupply',DATE_SUB(@seed_today,INTERVAL 120 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 120 DAY),INTERVAL 36 MONTH),'F-05',24),
+('Nivea Fresh Flower deodorant','Spray','DEMO000056','150ml','M056',190,249,'Available for use','Metro MedSupply',DATE_SUB(@seed_today,INTERVAL 120 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 120 DAY),INTERVAL 36 MONTH),'F-06',20),
+('Fogg Master deodorant','Spray','DEMO000057','120ml','M057',170,225,'Available for use','Prism Healthcare',DATE_SUB(@seed_today,INTERVAL 60 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 60 DAY),INTERVAL 36 MONTH),'F-07',22),
+('Nivea roll-on deodorant','Roll-on','DEMO000058','50ml','M058',160,210,'Available for use','Metro MedSupply',DATE_SUB(@seed_today,INTERVAL 150 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 150 DAY),INTERVAL 36 MONTH),'F-08',15),
+('Sensodyne toothpaste','Paste','DEMO000059','70g','M059',110,145,'Available for use','RiverSide Pharma',DATE_SUB(@seed_today,INTERVAL 90 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 90 DAY),INTERVAL 24 MONTH),'F-09',25),
+('Himalaya baby wipes','Wipes','DEMO000060','72 pcs','M060',120,159,'Available for use','Pune HealthSupply',DATE_SUB(@seed_today,INTERVAL 70 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 70 DAY),INTERVAL 24 MONTH),'F-10',20),
+('Hansaplast adhesive strips','Plaster','DEMO000061','20 pcs','M061',30,40,'Available for use','Sahyadri Pharma',DATE_SUB(@seed_today,INTERVAL 180 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 180 DAY),INTERVAL 60 MONTH),'G-01',50),
+('Absorbent cotton wool','Cotton','DEMO000062','100g','M062',45,65,'Available for use','Pune HealthSupply',DATE_SUB(@seed_today,INTERVAL 160 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 160 DAY),INTERVAL 60 MONTH),'G-02',30),
+('Crepe bandage 10 cm','Bandage','DEMO000063','10cm x 4m','M063',85,120,'Available for use','Western Care',DATE_SUB(@seed_today,INTERVAL 200 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 200 DAY),INTERVAL 60 MONTH),'G-03',18),
+('Digital thermometer','Device','DEMO000064','1 unit','M064',160,249,'Available for use','Prism Healthcare',DATE_SUB(@seed_today,INTERVAL 120 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 120 DAY),INTERVAL 60 MONTH),'G-04',6),
+('Vicks VapoRub','Balm','DEMO000065','50ml','M065',120,155,'Available for use','RiverSide Pharma',DATE_SUB(@seed_today,INTERVAL 100 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 100 DAY),INTERVAL 36 MONTH),'G-05',25),
+('Volini pain relief spray','Spray','DEMO000066','60g','M066',165,215,'Available for use','GreenLeaf Pharma',DATE_SUB(@seed_today,INTERVAL 85 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 85 DAY),INTERVAL 24 MONTH),'G-06',16),
+('Strepsils lozenges','Lozenge','DEMO000067','8 pcs','M067',28,40,'Available for use','Deccan MedSupply',DATE_SUB(@seed_today,INTERVAL 55 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 55 DAY),INTERVAL 36 MONTH),'G-07',60),
+('ENO fruit salt sachet','Powder','DEMO000068','5g','M068',7,10,'Available for use','Metro MedSupply',DATE_SUB(@seed_today,INTERVAL 65 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 65 DAY),INTERVAL 36 MONTH),'G-08',100),
+('3-ply surgical masks','Mask','DEMO000069','10 pcs','M069',35,60,'Available for use','Pune HealthSupply',DATE_SUB(@seed_today,INTERVAL 130 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 130 DAY),INTERVAL 60 MONTH),'G-09',40),
+('Boroline antiseptic cream','Cream','DEMO000070','20g','M070',34,45,'Available for use','Sahyadri Pharma',DATE_SUB(@seed_today,INTERVAL 110 DAY),DATE_ADD(DATE_SUB(@seed_today,INTERVAL 110 DAY),INTERVAL 36 MONTH),'G-10',30);
 
 
 INSERT INTO `purchase` (`BARCODE`,`NAME`,`TYPE`,`COMPANY_NAME`,`QUANTITY`,`PRICE`,`AMOUNT`) VALUES
@@ -214,7 +246,38 @@ INSERT INTO `purchase` (`BARCODE`,`NAME`,`TYPE`,`COMPANY_NAME`,`QUANTITY`,`PRICE
 ('DEMO000037','Chlorhexidine rinse','Solution','GreenLeaf Pharma',121,72,8712),
 ('DEMO000038','Dextrose injection','Injection','Metro MedSupply',162,28,4536),
 ('DEMO000039','Saline infusion','Injection','Prism Healthcare',91,32,2912),
-('DEMO000040','Hydrocortisone cream','Cream','RiverSide Pharma',135,42,5670);
+('DEMO000040','Hydrocortisone cream','Cream','RiverSide Pharma',135,42,5670),
+-- Everyday pharmacy products: sexual and reproductive health (E), personal care and hygiene (F), first aid (G).
+('DEMO000041','i-pill emergency contraceptive','Tablet','GreenLeaf Pharma',30,85,2550),
+('DEMO000042','Unwanted 72 emergency pill','Tablet','Deccan MedSupply',20,70,1400),
+('DEMO000043','Durex Extra Thin condoms','Condom','Metro MedSupply',40,260,10400),
+('DEMO000044','Manforce condoms','Condom','Prism Healthcare',50,140,7000),
+('DEMO000045','Moods condoms','Condom','Western Care',60,38,2280),
+('DEMO000046','Durex Play lubricant gel','Gel','Metro MedSupply',18,200,3600),
+('DEMO000047','K-Y Jelly lubricant','Gel','RiverSide Pharma',9,230,2070),
+('DEMO000048','Prega News pregnancy test','Kit','Sahyadri Pharma',35,42,1470),
+('DEMO000049','Whisper Ultra sanitary pads','Pad','Pune HealthSupply',40,75,3000),
+('DEMO000050','V Wash intimate hygiene wash','Solution','GreenLeaf Pharma',15,165,2475),
+('DEMO000051','Dettol antiseptic liquid','Solution','Deccan MedSupply',30,110,3300),
+('DEMO000052','Savlon antiseptic liquid','Solution','Western Care',20,90,1800),
+('DEMO000053','Dettol original soap','Soap','Deccan MedSupply',48,38,1824),
+('DEMO000054','Dettol hand sanitizer','Sanitizer','Sahyadri Pharma',36,75,2700),
+('DEMO000055','Nivea Men deodorant','Spray','Metro MedSupply',24,190,4560),
+('DEMO000056','Nivea Fresh Flower deodorant','Spray','Metro MedSupply',20,190,3800),
+('DEMO000057','Fogg Master deodorant','Spray','Prism Healthcare',22,170,3740),
+('DEMO000058','Nivea roll-on deodorant','Roll-on','Metro MedSupply',15,160,2400),
+('DEMO000059','Sensodyne toothpaste','Paste','RiverSide Pharma',25,110,2750),
+('DEMO000060','Himalaya baby wipes','Wipes','Pune HealthSupply',20,120,2400),
+('DEMO000061','Hansaplast adhesive strips','Plaster','Sahyadri Pharma',50,30,1500),
+('DEMO000062','Absorbent cotton wool','Cotton','Pune HealthSupply',30,45,1350),
+('DEMO000063','Crepe bandage 10 cm','Bandage','Western Care',18,85,1530),
+('DEMO000064','Digital thermometer','Device','Prism Healthcare',6,160,960),
+('DEMO000065','Vicks VapoRub','Balm','RiverSide Pharma',25,120,3000),
+('DEMO000066','Volini pain relief spray','Spray','GreenLeaf Pharma',16,165,2640),
+('DEMO000067','Strepsils lozenges','Lozenge','Deccan MedSupply',60,28,1680),
+('DEMO000068','ENO fruit salt sachet','Powder','Metro MedSupply',100,7,700),
+('DEMO000069','3-ply surgical masks','Mask','Pune HealthSupply',40,35,1400),
+('DEMO000070','Boroline antiseptic cream','Cream','Sahyadri Pharma',30,34,1020);
 
 
 INSERT INTO `history_sales` (`USER_NAME`,`BARCODE`,`NAME`,`TYPE`,`DOSE`,`QUANTITY`,`PRICE`,`AMOUNT`,`DATE`,`TIME`) VALUES
@@ -445,7 +508,7 @@ INSERT INTO `login` (`NAME`,`TYPE`,`DATE`,`TIME`) VALUES
 
 COMMIT;
 
--- Verification: should show 40 medicines, 8 companies, 5 users, 183 historical sales.
+-- Verification: should show 70 products (40 medicines and 30 everyday items), 8 companies, 5 users, 183 historical sales.
 SELECT COUNT(*) AS medicines FROM drugs;
 SELECT COUNT(*) AS companies FROM company;
 SELECT COUNT(*) AS staff FROM users;

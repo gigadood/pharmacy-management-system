@@ -1,16 +1,115 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pharmacy · Workspace</title><link rel="stylesheet" href="/static/style.css"></head>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Pharmacy</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230E9F6E'/%3E%3Cpath d='M13 6.5h6v6.5h6.5v6H19v6.5h-6V19H6.5v-6H13z' fill='white'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/static/style.css">
+<script>try{var t=localStorage.getItem('pharmacy-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
 <body>
-<section id="login" class="login-screen">
-  <div class="login-story"><div class="brand"><span class="brand-icon">✚</span> Pharmacy<span class="brand-dot">.</span></div><div><p class="eyebrow">YOUR DAILY PHARMACY WORKSPACE</p><h1>Less paperwork.<br>More patient care.</h1><p class="story-copy">Know what’s in stock, catch expiry dates, and keep every sale in one clear view.</p><div class="story-grid"><div>01<span>Inventory at a glance</span></div><div>02<span>Sales that stay in sync</span></div><div>03<span>A clearer daily routine</span></div></div></div><small>Connected to your existing pharmacy database</small></div>
-  <div class="login-panel"><form id="login-form"><span class="pill">LOCAL WORKSPACE</span><h2>Welcome back</h2><p>Sign in with your existing pharmacy account.</p><label>Staff ID<input name="id" inputmode="numeric" required placeholder="Enter your ID" autocomplete="username"></label><label>Password<input name="password" type="password" required placeholder="Enter your password" autocomplete="current-password"></label><p id="login-error" class="form-error" role="alert"></p><button class="primary" type="submit">Sign in <span>→</span></button><small class="login-hint">Demo account · ID 1 / password admin</small></form></div>
-</section>
-<div id="workspace" class="workspace" hidden>
-  <aside class="sidebar"><div class="brand"><span class="brand-icon">✚</span> Pharmacy<span class="brand-dot">.</span></div><p class="nav-caption">WORKSPACE</p><nav id="navigation"><button data-page="overview" class="active"><span>◫</span> Overview</button><button data-page="drugs"><span>▦</span> Medicine inventory</button><button data-page="sales"><span>↗</span> Sales & billing</button><button data-page="purchases"><span>⇣</span> Purchases</button><button data-page="companies"><span>▤</span> Companies</button><button data-page="users" data-admin><span>♙</span> Staff directory</button></nav><div class="sidebar-footer"><div class="connection"><i></i> MySQL connected</div><p>Your existing records.<br>A clearer way to work.</p><button id="logout" class="logout">↪ Sign out</button></div></aside>
-  <main><header class="topbar"><span>Workspace <span class="crumb">/</span> <b id="breadcrumb">Overview</b></span><div class="account"><span id="today"></span><span class="avatar" id="avatar">A</span><b id="account-name">Admin</b></div></header><div class="page"><div class="page-heading"><div><p class="eyebrow" id="page-eyebrow">A CLEAR VIEW OF YOUR PHARMACY</p><h1 id="page-title">Overview</h1><p id="page-subtitle">Everything you need to start your day.</p></div><div id="page-actions"></div></div><div id="content" aria-live="polite"></div><footer class="page-footer">Pharmacy workspace <span>Live records from your MySQL database</span></footer></div></main>
+
+<main id="login" class="login" hidden>
+  <div class="login-inner">
+    <div class="sign" aria-hidden="true"><span class="sign-cross"></span></div>
+    <h1 class="login-title" id="login-greeting">Good day.</h1>
+    <p class="login-lede">Sign in to open the counter.</p>
+    <form id="login-form" class="login-form" novalidate>
+      <label class="field">
+        <span>Staff ID</span>
+        <input name="id" inputmode="numeric" pattern="[0-9]*" autocomplete="username" required>
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <span class="pw">
+          <input name="password" type="password" autocomplete="current-password" required>
+          <button type="button" class="pw-toggle" id="pw-toggle" aria-label="Show password" aria-pressed="false">Show</button>
+        </span>
+      </label>
+      <p class="form-error" id="login-error" role="alert"></p>
+      <button class="btn primary full" type="submit">Sign in</button>
+    </form>
+    <p class="login-hint">Demo: staff ID <b>1</b> with password <b>admin</b>, or IDs 2 to 5 with <b>demo123</b>.</p>
+  </div>
+</main>
+
+<div id="app" class="app" hidden>
+  <header class="topbar">
+    <a class="brand" href="#/today" aria-label="Pharmacy, go to Today">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9"/><path d="M13 6.5h6v6.5h6.5v6H19v6.5h-6V19H6.5v-6H13z"/></svg>
+      <span>Pharmacy</span>
+    </a>
+    <nav class="tabs" id="tabs" aria-label="Main"></nav>
+    <div class="top-tools">
+      <button class="search-trigger" id="open-palette" type="button">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+        <span class="search-trigger-text">Search</span>
+        <kbd id="palette-kbd">Ctrl K</kbd>
+      </button>
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch to dark theme"></button>
+      <div class="me">
+        <button class="me-btn" id="me-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="me-menu">
+          <span class="avatar" id="avatar"></span><span class="me-name" id="me-name"></span>
+        </button>
+        <div class="me-menu" id="me-menu" role="menu" hidden>
+          <p class="me-role" id="me-role"></p>
+          <button role="menuitem" id="logout" type="button">Sign out</button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main id="view" class="view" tabindex="-1"></main>
 </div>
-<dialog id="form-dialog"><div class="dialog-heading"><div><p class="eyebrow">PHARMACY WORKSPACE</p><h2 id="dialog-title"></h2></div><button id="close-dialog" class="icon-button" aria-label="Close dialog">×</button></div><form id="record-form"><div id="form-fields" class="form-grid"></div><p id="record-error" class="form-error" role="alert"></p><div class="dialog-actions"><button type="button" id="cancel-dialog" class="secondary">Cancel</button><button type="submit" class="primary">Save record</button></div></form><div id="receipt" hidden></div></dialog>
-<div id="toast" class="toast" role="status" hidden></div>
+
+<dialog id="sheet" class="sheet" aria-labelledby="sheet-title"><div id="sheet-body"></div></dialog>
+
+<dialog id="form-dialog" class="modal" aria-labelledby="form-title">
+  <form id="record-form" novalidate>
+    <header class="modal-head">
+      <h2 id="form-title"></h2>
+      <button type="button" class="icon-btn" data-close aria-label="Close">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+    <div id="form-fields" class="modal-body"></div>
+    <p class="form-error" id="form-error" role="alert"></p>
+    <footer class="modal-foot">
+      <button type="button" class="btn ghost" data-close>Cancel</button>
+      <button type="submit" class="btn primary" id="form-submit">Save</button>
+    </footer>
+  </form>
+</dialog>
+
+<dialog id="receipt" class="receipt-dialog" aria-label="Receipt">
+  <div class="slip-wrap"><article class="slip" id="slip"></article></div>
+  <div class="receipt-actions">
+    <button class="btn ghost" id="print-receipt" type="button">Print receipt</button>
+    <button class="btn primary" id="next-sale" type="button">Start next sale</button>
+  </div>
+</dialog>
+
+<dialog id="palette" class="palette" aria-label="Search">
+  <div class="palette-search">
+    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+    <input id="palette-q" placeholder="Search medicines, pages and actions" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="palette-list" aria-autocomplete="list">
+  </div>
+  <ul id="palette-list" class="palette-list" role="listbox" aria-label="Results"></ul>
+  <footer class="palette-foot">
+    <span><kbd>↑</kbd><kbd>↓</kbd> move</span>
+    <span><kbd>Enter</kbd> open</span>
+    <span><kbd>Shift</kbd><kbd>Enter</kbd> add to bill</span>
+    <span><kbd>Esc</kbd> close</span>
+  </footer>
+</dialog>
+
+<div id="tip" class="tip" role="tooltip" hidden></div>
+<div id="toasts" class="toasts" aria-live="polite"></div>
+
 <script src="/static/app.js"></script>
-</body></html>
+</body>
+</html>
